@@ -1,7 +1,7 @@
 fastapi
 uvicorn
 python-dotenv
-langchain # Keep the core library
+langchain==0.1.16
 langchain-groq # For your fast LLM
 langchain-cohere # NEW: For remote, free embeddings
 langchain-chroma # Use the updated Chroma integration
