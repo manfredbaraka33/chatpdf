@@ -1,8 +1,8 @@
 import os, shutil, uuid
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_cohere import CohereEmbeddings
-from langchain_community.document_loaders import PyMuPDFLoader 
 from langchain_community.vectorstores import Chroma
+from langchain_community.document_loaders import PyPDFLoader
 from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
 from chromadb import Client 
@@ -38,7 +38,7 @@ def process_pdfs(files):
             shutil.copyfileobj(file.file, f)
 
         # Loader is unchanged for PyMuPDF
-        loader = PyMuPDFLoader(path) 
+        loader = PyPDFLoader(path) 
         docs = loader.load()
 
         splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
