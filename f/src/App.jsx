@@ -10,7 +10,7 @@ function App() {
   // Poll /status/ endpoint
   const checkStatus = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/status/");
+      const res = await axios.get("https://chatpdf-production.up.railway.app/status/");
       setIsReady(res.data.ready);
       if (!res.data.ready) {
         setTimeout(checkStatus, 1000); // poll every second
