@@ -54,13 +54,12 @@
 
 
 
-
-import anyio # <-- NEW: For running synchronous code asynchronously
-from fastapi import FastAPI, UploadFile, File # BackgroundTasks is removed
+import anyio # For running synchronous code asynchronously
+from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from services import process_pdfs, ask_question
-from starlette.background import BackgroundTasks # If you use it, but we are replacing it
+# Note: Removed the unused import 'BackgroundTasks'
 
 app = FastAPI(title="PDF Q&A API")
 
@@ -84,28 +83,28 @@ async def home():
     return {"message":"API working fine!"}
 
 @app.post("/upload/")
-async def upload_pdfs(files: list[UploadFile] = File(...)): # BackgroundTasks argument is REMOVED
-    # Set status to not ready
+async def upload_pdfs(files: list[UploadFile] = File(...)):
+    # Set status to not ready (disables frontend typing/asking)
     processing_status["ready"] = False
     
     try:
         # --- CRITICAL FIX: Use run_sync to move the heavy, blocking work to a background thread ---
-        # The return value (total_chunks) is captured after the process completes.
+        # This prevents the Uvicorn worker thread from hanging during file I/O and embedding.
         total_chunks = await anyio.to_thread.run_sync(process_pdfs, files)
         
-        # This line only runs AFTER all PDF processing, embedding, and adding is finished.
+        # This line only runs AFTER all PDF processing, embedding, and adding is finished successfully.
         processing_status["ready"] = True
         
         return {"message": f"Successfully processed {len(files)} PDFs.",
                 "chunks": total_chunks}
     
     except Exception as e:
-        # If the background process crashes, set status to true (so the service isn't stuck) 
-        # and re-raise the error for the client to see the failure.
-        processing_status["ready"] = True 
+        # If the background process crashes, set status back to True to UNLOCK THE UI. 
+        # Otherwise, the frontend will be permanently disabled.
+        processing_status["ready"] = True  
         print(f"ERROR: PDF processing failed: {e}")
-        # Re-raise the exception so FastAPI handles it and returns a 500
-        raise e 
+        # Re-raise the exception so FastAPI handles it and returns a 500 status code.
+        raise e  
 
 
 class Question(BaseModel):
