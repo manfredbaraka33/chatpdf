@@ -5,7 +5,7 @@ from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_community.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
-from chromadb.config import Settings-
+from chromadb.config import Settings
 from chromadb import Client 
 
 from config import GROQ_API_KEY, CHROMA_DIR, COLLECTION_NAME
