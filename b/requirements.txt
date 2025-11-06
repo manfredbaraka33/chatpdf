@@ -8,11 +8,5 @@ langchain-chroma # Use the updated Chroma integration
 python-multipart # Keep this, essential for FastAPI file uploads
 langchain-community # Keep this, needed for many modern LangChain loaders
 langchain-text-splitters
-
-# --- PDF Loader Choice ---
-pypdf # Best choice for simple, licensed PDF reading (Used by PyPDFLoader)
-# OR pymupdf (Faster but has a more restrictive AGPL license, which could be an issue for a public facing app)
-
-# --- REMOVED: ---
-# - chromadb: Now included by langchain-chroma
-# - sentence-transformers: Removed to avoid the 7.4GB image size limit.
+posthog>=2.4.0,<6.0.0
+pypdf 
