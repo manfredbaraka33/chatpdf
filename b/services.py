@@ -34,8 +34,10 @@ def process_pdfs(files):
     # We must explicitly pass the embedding function during creation, as we rely on it now.
     collection = client.get_or_create_collection(
         name=COLLECTION_NAME,
-        embedding_function=embedding_function.embed_query 
+        # embedding_function=embedding_function.embed_query 
     )
+
+    
 
     temp_dir = "temp"
     os.makedirs(temp_dir, exist_ok=True)
