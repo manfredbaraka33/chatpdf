@@ -1,22 +1,18 @@
 import os, shutil, uuid
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_cohere import CohereEmbeddings # ADDED: For free, remote embeddings
+from langchain_cohere import CohereEmbeddings
 from langchain_community.document_loaders import PyMuPDFLoader 
 from langchain_community.vectorstores import Chroma
 from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
-# --- CHANGE 2: REMOVE PERSISTENCE ---
-from chromadb import Client # CHANGED from PersistentClient
+from chromadb.config import Settings-
+from chromadb import Client 
 
 from config import GROQ_API_KEY, CHROMA_DIR, COLLECTION_NAME
 
-
-# --- REMOVED: embedding_function = HuggingFaceEmbeddings(...) ---
-# --- ADDED: Cohere embedding function is defined later, or we can define it globally:
 embedding_function = CohereEmbeddings(model="embed-english-light-v3.0") # Reads COHERE_API_KEY env var
 
-# --- CHANGED CLIENT INITIALIZATION ---
-client = Client() # CHANGED from PersistentClient(path=CHROMA_DIR)
+client = Client(Settings(anonymized_telemetry=False))
 
 
 def process_pdfs(files):
@@ -29,7 +25,7 @@ def process_pdfs(files):
     # We must explicitly pass the embedding function during creation, as we rely on it now.
     collection = client.get_or_create_collection(
         name=COLLECTION_NAME,
-        embedding_function=embedding_function.embed_query # Use the embedding function here too
+        embedding_function=embedding_function.embed_query 
     )
 
     temp_dir = "temp"
@@ -74,7 +70,6 @@ def ask_question(query: str):
     retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
     llm = ChatGroq(
         temperature=0.5,
-        # groq_api_key=GROQ_API_KEY, # OPTIONAL: You can remove this line if GROQ_API_KEY is set in environment
         model_name="llama-3.3-70b-versatile"
     )
 
