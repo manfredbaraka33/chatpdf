@@ -1,12 +1,17 @@
 fastapi
 uvicorn
 python-dotenv
-langchain
-langchain-groq
-chromadb
-pymupdf
-sentence-transformers
-langchain-community
-python-multipart
+langchain # Keep the core library
+langchain-groq # For your fast LLM
+langchain-cohere # NEW: For remote, free embeddings
+langchain-chroma # Use the updated Chroma integration
+python-multipart # Keep this, essential for FastAPI file uploads
+langchain-community # Keep this, needed for many modern LangChain loaders
 
+# --- PDF Loader Choice ---
+pypdf # Best choice for simple, licensed PDF reading (Used by PyPDFLoader)
+# OR pymupdf (Faster but has a more restrictive AGPL license, which could be an issue for a public facing app)
 
+# --- REMOVED: ---
+# - chromadb: Now included by langchain-chroma
+# - sentence-transformers: Removed to avoid the 7.4GB image size limit.
