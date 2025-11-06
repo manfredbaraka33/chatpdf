@@ -1,8 +1,7 @@
 import os
 import shutil
 import uuid
-import time # Optional: Add for debugging, if needed
-
+import time 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_cohere import CohereEmbeddings
 from langchain_community.vectorstores import Chroma
@@ -10,16 +9,11 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
 from chromadb import Client
-
-# Assuming config.py is correctly set up
 from config import GROQ_API_KEY, CHROMA_DIR, COLLECTION_NAME
 
-# --- CRITICAL FIX: REMOVE GLOBAL INITIALIZATION OF EXTERNAL SERVICES ---
-# The CohereEmbeddings object must NOT be initialized globally as it can hang startup.
-# embedding_function = CohereEmbeddings(model="embed-english-light-v3.0") # REMOVED
 
-client = Client() # Keep the Chroma client here, as it's safe.
 
+client = Client() 
 
 def process_pdfs(files):
     # 1. Initialize Embeddings LOCALLY (inside the function)
@@ -34,7 +28,6 @@ def process_pdfs(files):
     # We must explicitly pass the embedding function during creation, as we rely on it now.
     collection = client.get_or_create_collection(
         name=COLLECTION_NAME,
-        # embedding_function=embedding_function.embed_query 
     )
 
     
@@ -78,8 +71,8 @@ def ask_question(query: str):
     vectorstore = Chroma(
         client=client,
         collection_name=COLLECTION_NAME,
-        embedding_function=embeddings, # Pass the locally defined embedding function
-        # persist_directory=CHROMA_DIR # REMOVED for in-memory client
+        embedding_function=embeddings, 
+        
     )
 
     retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
