@@ -2,11 +2,12 @@ fastapi
 uvicorn
 python-dotenv
 langchain==0.1.16
-langchain-groq # For your fast LLM
-langchain-cohere # NEW: For remote, free embeddings
-langchain-chroma # Use the updated Chroma integration
-python-multipart # Keep this, essential for FastAPI file uploads
-langchain-community # Keep this, needed for many modern LangChain loaders
-langchain-text-splitters
+langchain-community
+langchain-groq
+langchain-cohere
+langchain-chroma
+chromadb
+pypdf
+python-multipart
 posthog>=2.4.0,<6.0.0
-pypdf 
+uvicorn[standard]
