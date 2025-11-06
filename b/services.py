@@ -1,5 +1,5 @@
 import os, shutil, uuid
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_cohere import CohereEmbeddings # ADDED: For free, remote embeddings
 from langchain_community.document_loaders import PyMuPDFLoader 
 from langchain_community.vectorstores import Chroma
