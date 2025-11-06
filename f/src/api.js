@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://chatpdf-production.up.railway.app";
 
 export const uploadPDFs = (files) => {
   const formData = new FormData();
