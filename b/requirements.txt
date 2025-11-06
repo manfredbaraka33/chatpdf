@@ -7,6 +7,7 @@ langchain-cohere # NEW: For remote, free embeddings
 langchain-chroma # Use the updated Chroma integration
 python-multipart # Keep this, essential for FastAPI file uploads
 langchain-community # Keep this, needed for many modern LangChain loaders
+langchain-text-splitters
 
 # --- PDF Loader Choice ---
 pypdf # Best choice for simple, licensed PDF reading (Used by PyPDFLoader)
